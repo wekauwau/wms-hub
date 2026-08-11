@@ -12,7 +12,7 @@
   "scripts": {
     "server": "pnpm --filter @wms-hub/server",
     "web": "pnpm --filter @wms-hub/web",
-    "dev": "pnpm --parallel run dev:server dev:web",
+    "dev": "pnpm --parallel --filter './packages/*' dev",
     "dev:server": "pnpm server dev",
     "dev:web": "pnpm web dev",
     "build": "pnpm -r build",
@@ -40,7 +40,6 @@
     "@types/eslint": "^9.6.1",
     "@vitest/eslint-plugin": "^1.6.27",
     "@vue/eslint-config-typescript": "^14.9.0",
-    "concurrently": "^10.0.4",
     "eslint": "^10.8.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-vue": "^10.10.0",
