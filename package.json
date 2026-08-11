@@ -22,9 +22,9 @@
     "db:seed": "pnpm server run seed",
     "lint": "pnpm server run lint && pnpm web run lint",
     "lint:fix": "pnpm server run lint:fix && pnpm web run lint:fix",
-    "typecheck": "pnpm server run typecheck && pnpm web run typecheck"
+    "typecheck": "pnpm server run typecheck && pnpm web run typecheck",
     "format": "prettier --write \"packages/**/*.{ts,vue,json,css}\"",
-    "format:check": "prettier --check \"packages/**/*.{ts,vue,json,css}\"",
+    "format:check": "prettier --check \"packages/**/*.{ts,vue,json,css}\""
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
