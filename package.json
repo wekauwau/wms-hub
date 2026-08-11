@@ -27,6 +27,16 @@
     "format:check": "prettier --check \"packages/**/*.{ts,vue,json,css}\""
   },
   "devDependencies": {
-    "concurrently": "^10.0.4"
+    "@types/eslint": "^9.6.1",
+    "@vitest/eslint-plugin": "^1.6.27",
+    "@vue/eslint-config-typescript": "^14.9.0",
+    "concurrently": "^10.0.4",
+    "eslint": "^10.8.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vue": "^10.10.0",
+    "prettier": "^3.9.6",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "typescript-eslint": "^8.66.0"
   }
 }
