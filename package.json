@@ -24,7 +24,17 @@
     "lint:fix": "pnpm server run lint:fix && pnpm web run lint:fix",
     "typecheck": "pnpm server run typecheck && pnpm web run typecheck",
     "format": "prettier --write \"packages/**/*.{ts,vue,json,css}\"",
-    "format:check": "prettier --check \"packages/**/*.{ts,vue,json,css}\""
+    "format:check": "prettier --check \"packages/**/*.{ts,vue,json,css}\"",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "packages/**/*.{ts,mts,tsx,vue}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "packages/**/*.{json,css,md}": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
     "@types/eslint": "^9.6.1",
@@ -34,6 +44,8 @@
     "eslint": "^10.8.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-vue": "^10.10.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.3.0",
     "prettier": "^3.9.6",
     "prettier-plugin-organize-imports": "^4.3.0",
     "prettier-plugin-tailwindcss": "^0.8.1",
