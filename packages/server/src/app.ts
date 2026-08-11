@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { checkDatabaseConnection } from "./config/db.js";
+import { errorHandler, notFoundHandler } from "./middleware/handler.js";
 
 const app = express();
 
@@ -17,5 +18,8 @@ app.get("/health", async (_req, res) => {
     res.status(503).json({ status: "error", db: "disconnected", timestamp: new Date().toISOString() });
   }
 });
+
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 export default app;
