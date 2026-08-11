@@ -2,18 +2,27 @@
   "name": "wms-hub",
   "author": "wekauwau",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.3.0",
+      "onFail": "download"
+    }
+  },
   "scripts": {
-    "dev": "concurrently -n server,web -c blue,green \"npm run dev -w packages/server\" \"npm run dev -w packages/web\"",
+    "dev": "pnpm --parallel run dev:server dev:web",
+    "dev:server": "pnpm --filter @wms-hub/server dev",
+    "dev:web": "pnpm --filter @wms-hub/web dev",
+    "build": "pnpm --filter @wms-hub/server build && pnpm --filter @wms-hub/web build",
+    "server": "pnpm --filter @wms-hub/server",
+    "web": "pnpm --filter @wms-hub/web",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down -v",
-    "db:migrate": "npm run migrate -w packages/server",
-    "db:seed": "npm run seed -w packages/server",
-    "lint": "npm run lint -w packages/server && npm run lint -w packages/web",
-    "lint:fix": "npm run lint:fix -w packages/server && npm run lint:fix -w packages/web",
-    "typecheck": "npm run typecheck -w packages/server && npm run typecheck -w packages/web",
+    "db:migrate": "pnpm server run migrate",
+    "db:seed": "pnpm server run seed",
+    "lint": "pnpm server run lint && pnpm web run lint",
+    "lint:fix": "pnpm server run lint:fix && pnpm web run lint:fix",
+    "typecheck": "pnpm server run typecheck && pnpm web run typecheck",
     "format": "prettier --write \"packages/**/*.{ts,vue,json,css}\"",
     "format:check": "prettier --check \"packages/**/*.{ts,vue,json,css}\""
   },

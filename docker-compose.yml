@@ -12,7 +12,11 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-wms} -d ${POSTGRES_DB:-wms}"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-wms} -d ${POSTGRES_DB:-wms}",
+        ]
       interval: 5s
       timeout: 5s
       retries: 5
