@@ -1,3 +1,35 @@
--- WMS Hub - Schema (source of truth)
--- Tables, views, functions, triggers go here
--- Extensions are managed separately in migrations/00000_baseline.sql
+CREATE TYPE user_status AS ENUM ('ACTIVE', 'INACTIVE', 'LOCKED');
+
+CREATE TYPE movement_type AS ENUM (
+  'RECEIPT', 'PUTAWAY', 'PICK', 'PACK', 'SHIP',
+  'ADJUSTMENT_ADD', 'ADJUSTMENT_REMOVE',
+  'TRANSFER_OUT', 'TRANSFER_IN',
+  'CYCLE_COUNT_ADJUSTMENT'
+);
+
+CREATE TYPE order_status AS ENUM (
+  'PENDING', 'ALLOCATED', 'PICKING', 'PICKED',
+  'PACKED', 'SHIPPED', 'DELIVERED', 'CANCELLED'
+);
+
+CREATE TYPE asn_status AS ENUM (
+  'DRAFT', 'SUBMITTED', 'PARTIALLY_RECEIVED', 'RECEIVED', 'CLOSED', 'CANCELLED'
+);
+
+CREATE TYPE reservation_status AS ENUM ('ACTIVE', 'FULFILLED', 'RELEASED');
+
+CREATE TYPE exception_status AS ENUM ('OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED');
+
+CREATE TYPE exception_type AS ENUM (
+  'SHORT_SHIPMENT', 'OVER_RECEIPT', 'DAMAGED_GOODS',
+  'LOCATION_FULL', 'WRONG_ITEM', 'WRONG_LOCATION',
+  'STOCK_DISCREPANCY', 'QUALITY_HOLD'
+);
+
+CREATE TYPE location_type AS ENUM ('WAREHOUSE', 'ZONE', 'AISLE', 'SHELF', 'BIN');
+
+CREATE TYPE cycle_count_status AS ENUM ('DRAFT', 'IN_PROGRESS', 'SUBMITTED', 'RECONCILED', 'CANCELLED');
+
+CREATE TYPE adjustment_status AS ENUM ('PENDING', 'APPROVED', 'REJECTED');
+
+CREATE TYPE transfer_status AS ENUM ('PENDING', 'IN_TRANSIT', 'COMPLETED', 'CANCELLED');
