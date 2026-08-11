@@ -27,6 +27,6 @@
     "format:check": "prettier --check \"packages/**/*.{ts,vue,json,css}\""
   },
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^10.0.4"
   }
 }
