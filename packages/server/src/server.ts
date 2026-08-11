@@ -14,9 +14,12 @@ function findEnvFile(): string {
 
 dotenv.config({ path: findEnvFile() });
 
+import { getEnv } from "./config/env.js";
+getEnv();
+
 import app from "./app.js";
 
-const PORT = Number(process.env.PORT) || 3000;
+const { PORT } = getEnv();
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
