@@ -25,3 +25,5 @@
 -- atlas:import schemas/public/tables/inventory_movements.sql
 -- atlas:import schemas/public/tables/current_stock.sql
 -- atlas:import schemas/public/tables/stock_reservations.sql
+-- atlas:import schemas/public/tables/purchase_orders.sql
+-- atlas:import schemas/public/tables/po_lines.sql

@@ -180,3 +180,27 @@ CREATE TABLE stock_reservations (
 
 CREATE INDEX idx_reservations_order ON stock_reservations (sales_order_id);
 CREATE INDEX idx_reservations_sku ON stock_reservations (sku_id, status);
+
+-- Inbound Pipeline
+CREATE TABLE purchase_orders (
+  id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  po_number varchar(50) UNIQUE NOT NULL,
+  warehouse_id int NOT NULL REFERENCES warehouses (id),
+  supplier_name varchar(255),
+  expected_date date,
+  status asn_status DEFAULT 'DRAFT',
+  notes text,
+  created_by int NOT NULL REFERENCES users (id),
+  created_at timestamptz DEFAULT NOW(),
+  updated_at timestamptz DEFAULT NOW()
+);
+
+CREATE TABLE po_lines (
+  id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  po_id int NOT NULL REFERENCES purchase_orders (id) ON DELETE CASCADE,
+  sku_id int NOT NULL REFERENCES skus (id),
+  expected_quantity decimal(12, 4) NOT NULL,
+  received_quantity decimal(12, 4) DEFAULT 0,
+  unit_cost decimal(12, 4),
+  created_at timestamptz DEFAULT NOW()
+);
