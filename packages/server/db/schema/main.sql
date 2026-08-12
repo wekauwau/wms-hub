@@ -32,3 +32,9 @@
 -- atlas:import schemas/public/tables/pick_tasks.sql
 -- atlas:import schemas/public/tables/shipments.sql
 -- atlas:import schemas/public/tables/shipment_items.sql
+-- atlas:import schemas/public/tables/cycle_counts.sql
+-- atlas:import schemas/public/tables/cycle_count_lines.sql
+-- atlas:import schemas/public/tables/stock_adjustments.sql
+-- atlas:import schemas/public/tables/stock_transfers.sql
+-- atlas:import schemas/public/tables/exceptions.sql
+-- atlas:import schemas/public/tables/audit_logs.sql

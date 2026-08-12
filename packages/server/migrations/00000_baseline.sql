@@ -265,3 +265,93 @@ CREATE TABLE shipment_items (
   so_line_id int NOT NULL REFERENCES so_lines (id),
   quantity decimal(12, 4) NOT NULL
 );
+
+-- Supporting Workflows
+CREATE TABLE cycle_counts (
+  id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  count_number varchar(50) UNIQUE NOT NULL,
+  warehouse_id int NOT NULL REFERENCES warehouses (id),
+  location_id int REFERENCES locations (id),
+  status cycle_count_status DEFAULT 'DRAFT',
+  initiated_by int NOT NULL REFERENCES users (id),
+  reconciled_by int REFERENCES users (id),
+  created_at timestamptz DEFAULT NOW(),
+  reconciled_at timestamptz
+);
+
+CREATE TABLE cycle_count_lines (
+  id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  cycle_count_id int NOT NULL REFERENCES cycle_counts (id) ON DELETE CASCADE,
+  sku_id int NOT NULL REFERENCES skus (id),
+  location_id int NOT NULL REFERENCES locations (id),
+  expected_quantity decimal(12, 4) NOT NULL,
+  counted_quantity decimal(12, 4),
+  variance decimal(12, 4) GENERATED ALWAYS AS (counted_quantity - expected_quantity) STORED,
+  counted_by int REFERENCES users (id),
+  counted_at timestamptz
+);
+
+CREATE TABLE stock_adjustments (
+  id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  adjustment_number varchar(50) UNIQUE NOT NULL,
+  warehouse_id int NOT NULL REFERENCES warehouses (id),
+  sku_id int NOT NULL REFERENCES skus (id),
+  location_id int NOT NULL REFERENCES locations (id),
+  quantity_change decimal(12, 4) NOT NULL,
+  reason_code varchar(50) NOT NULL,
+  notes text,
+  status adjustment_status DEFAULT 'PENDING',
+  requested_by int NOT NULL REFERENCES users (id),
+  approved_by int REFERENCES users (id),
+  created_at timestamptz DEFAULT NOW(),
+  approved_at timestamptz
+);
+
+CREATE TABLE stock_transfers (
+  id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  transfer_number varchar(50) UNIQUE NOT NULL,
+  sku_id int NOT NULL REFERENCES skus (id),
+  from_warehouse_id int NOT NULL REFERENCES warehouses (id),
+  from_location_id int NOT NULL REFERENCES locations (id),
+  to_warehouse_id int NOT NULL REFERENCES warehouses (id),
+  to_location_id int NOT NULL REFERENCES locations (id),
+  quantity decimal(12, 4) NOT NULL,
+  status transfer_status DEFAULT 'PENDING',
+  requested_by int NOT NULL REFERENCES users (id),
+  completed_by int REFERENCES users (id),
+  created_at timestamptz DEFAULT NOW(),
+  completed_at timestamptz
+);
+
+CREATE TABLE exceptions (
+  id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  exception_type exception_type NOT NULL,
+  status exception_status DEFAULT 'OPEN',
+  reference_type varchar(50),
+  reference_id int,
+  warehouse_id int NOT NULL REFERENCES warehouses (id),
+  sku_id int REFERENCES skus (id),
+  location_id int REFERENCES locations (id),
+  description text NOT NULL,
+  resolution text,
+  raised_by int NOT NULL REFERENCES users (id),
+  resolved_by int REFERENCES users (id),
+  created_at timestamptz DEFAULT NOW(),
+  resolved_at timestamptz
+);
+
+CREATE TABLE audit_logs (
+  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  entity_type varchar(50) NOT NULL,
+  entity_id int NOT NULL,
+  action varchar(20) NOT NULL,
+  old_values jsonb,
+  new_values jsonb,
+  user_id int REFERENCES users (id),
+  ip_address inet,
+  created_at timestamptz DEFAULT NOW()
+);
+
+CREATE INDEX idx_audit_entity ON audit_logs (entity_type, entity_id);
+CREATE INDEX idx_audit_user ON audit_logs (user_id);
+CREATE INDEX idx_audit_created ON audit_logs (created_at);
