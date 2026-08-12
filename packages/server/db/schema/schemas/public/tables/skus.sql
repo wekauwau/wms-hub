@@ -7,8 +7,8 @@ CREATE TABLE public.skus (
   description TEXT,
   category VARCHAR(100),
   uom VARCHAR(20) NOT NULL DEFAULT 'UNITS',
-  weight DECIMAL(10,4),
-  volume DECIMAL(10,6),
+  weight DECIMAL(10, 4),
+  volume DECIMAL(10, 6),
   is_active BOOLEAN DEFAULT TRUE,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()

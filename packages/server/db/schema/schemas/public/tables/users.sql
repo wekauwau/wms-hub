@@ -6,7 +6,7 @@ CREATE TABLE public.users (
   password_hash VARCHAR(255) NOT NULL,
   first_name VARCHAR(100) NOT NULL,
   last_name VARCHAR(100) NOT NULL,
-  status public.user_status DEFAULT 'ACTIVE',
+  status public.USER_STATUS DEFAULT 'ACTIVE',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );

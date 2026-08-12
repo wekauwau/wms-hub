@@ -3,16 +3,16 @@
 -- Append-only ledger: every inventory change is a row here
 CREATE TABLE public.inventory_movements (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  sku_id INT NOT NULL REFERENCES public.skus(id),
-  location_id INT NOT NULL REFERENCES public.locations(id),
-  warehouse_id INT NOT NULL REFERENCES public.warehouses(id),
-  quantity DECIMAL(12,4) NOT NULL, -- positive = inbound, negative = outbound
-  movement_type public.movement_type NOT NULL,
+  sku_id INT NOT NULL REFERENCES public.skus (id),
+  location_id INT NOT NULL REFERENCES public.locations (id),
+  warehouse_id INT NOT NULL REFERENCES public.warehouses (id),
+  quantity DECIMAL(12, 4) NOT NULL, -- positive = inbound, negative = outbound
+  movement_type public.MOVEMENT_TYPE NOT NULL,
   reference_type VARCHAR(50), -- 'PURCHASE_ORDER', 'SALES_ORDER', 'ADJUSTMENT', etc.
   reference_id INT,
   reason_code VARCHAR(50),
   notes TEXT,
-  created_by INT NOT NULL REFERENCES public.users(id),
+  created_by INT NOT NULL REFERENCES public.users (id),
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
