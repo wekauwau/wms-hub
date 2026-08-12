@@ -71,3 +71,32 @@ CREATE TABLE role_permissions (
   permission_id INT REFERENCES permissions(id) ON DELETE CASCADE,
   PRIMARY KEY (role_id, permission_id)
 );
+
+-- Warehouses
+CREATE TABLE warehouses (
+  id SERIAL PRIMARY KEY,
+  code VARCHAR(50) UNIQUE NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  address TEXT,
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Locations (hierarchical with LTREE)
+CREATE TABLE locations (
+  id SERIAL PRIMARY KEY,
+  warehouse_id INT NOT NULL REFERENCES warehouses(id),
+  code VARCHAR(50) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  type location_type NOT NULL,
+  parent_id INT REFERENCES locations(id),
+  capacity DECIMAL(12,4),
+  capacity_unit VARCHAR(20),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (warehouse_id, code)
+);
+
+CREATE INDEX idx_locations_warehouse ON locations (warehouse_id);
