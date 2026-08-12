@@ -126,3 +126,57 @@ CREATE TABLE skus (
 
 CREATE INDEX idx_skus_code ON skus USING gin (sku_code gin_trgm_ops);
 CREATE INDEX idx_skus_name ON skus USING gin (name gin_trgm_ops);
+
+-- Inventory (Ledger + Current Stock)
+CREATE TABLE inventory_movements (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  sku_id INT NOT NULL REFERENCES skus(id),
+  location_id INT NOT NULL REFERENCES locations(id),
+  warehouse_id INT NOT NULL REFERENCES warehouses(id),
+  quantity DECIMAL(12,4) NOT NULL,
+  movement_type movement_type NOT NULL,
+  reference_type VARCHAR(50),
+  reference_id INT,
+  reason_code VARCHAR(50),
+  notes TEXT,
+  created_by INT NOT NULL REFERENCES users(id),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_movements_sku ON inventory_movements (sku_id);
+CREATE INDEX idx_movements_location ON inventory_movements (location_id);
+CREATE INDEX idx_movements_warehouse ON inventory_movements (warehouse_id);
+CREATE INDEX idx_movements_type ON inventory_movements (movement_type);
+CREATE INDEX idx_movements_ref ON inventory_movements (reference_type, reference_id);
+CREATE INDEX idx_movements_created ON inventory_movements (created_at);
+
+CREATE TABLE current_stock (
+  id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  sku_id INT NOT NULL REFERENCES skus(id),
+  location_id INT NOT NULL REFERENCES locations(id),
+  warehouse_id INT NOT NULL REFERENCES warehouses(id),
+  on_hand DECIMAL(12,4) NOT NULL DEFAULT 0,
+  reserved DECIMAL(12,4) NOT NULL DEFAULT 0,
+  version INT NOT NULL DEFAULT 1,
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (sku_id, location_id, warehouse_id)
+);
+
+CREATE INDEX idx_stock_sku ON current_stock (sku_id);
+CREATE INDEX idx_stock_location ON current_stock (location_id);
+CREATE INDEX idx_stock_warehouse ON current_stock (warehouse_id);
+
+CREATE TABLE stock_reservations (
+  id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  sku_id INT NOT NULL REFERENCES skus(id),
+  location_id INT NOT NULL REFERENCES locations(id),
+  warehouse_id INT NOT NULL REFERENCES warehouses(id),
+  sales_order_id INT NOT NULL,
+  quantity DECIMAL(12,4) NOT NULL,
+  status reservation_status DEFAULT 'ACTIVE',
+  expires_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_reservations_order ON stock_reservations (sales_order_id);
+CREATE INDEX idx_reservations_sku ON stock_reservations (sku_id, status);

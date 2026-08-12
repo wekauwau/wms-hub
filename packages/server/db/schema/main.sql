@@ -22,3 +22,6 @@
 -- atlas:import schemas/public/tables/warehouses.sql
 -- atlas:import schemas/public/tables/locations.sql
 -- atlas:import schemas/public/tables/skus.sql
+-- atlas:import schemas/public/tables/inventory_movements.sql
+-- atlas:import schemas/public/tables/current_stock.sql
+-- atlas:import schemas/public/tables/stock_reservations.sql
