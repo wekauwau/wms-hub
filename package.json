@@ -25,6 +25,8 @@
     "typecheck": "pnpm server run typecheck && pnpm web run typecheck",
     "format": "prettier --write \"packages/**/*.{ts,vue,json,css}\"",
     "format:check": "prettier --check \"packages/**/*.{ts,vue,json,css}\"",
+    "format:sql": "sqlfluff fix --dialect postgres \"packages/**/*.sql\"",
+    "format:sql:check": "sqlfluff lint --dialect postgres \"packages/**/*.sql\"",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -34,6 +36,9 @@
     ],
     "packages/**/*.{json,css,md}": [
       "prettier --write"
+    ],
+    "packages/**/*.sql": [
+      "sqlfluff fix --dialect postgres"
     ]
   },
   "devDependencies": {
