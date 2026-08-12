@@ -1,0 +1,24 @@
+-- atlas:import schemas/public/public.sql
+
+-- Types
+-- atlas:import schemas/public/types/enum_user_status.sql
+-- atlas:import schemas/public/types/enum_movement_type.sql
+-- atlas:import schemas/public/types/enum_order_status.sql
+-- atlas:import schemas/public/types/enum_asn_status.sql
+-- atlas:import schemas/public/types/enum_reservation_status.sql
+-- atlas:import schemas/public/types/enum_exception_status.sql
+-- atlas:import schemas/public/types/enum_exception_type.sql
+-- atlas:import schemas/public/types/enum_location_type.sql
+-- atlas:import schemas/public/types/enum_cycle_count_status.sql
+-- atlas:import schemas/public/types/enum_adjustment_status.sql
+-- atlas:import schemas/public/types/enum_transfer_status.sql
+
+-- Tables
+-- atlas:import schemas/public/tables/users.sql
+-- atlas:import schemas/public/tables/roles.sql
+-- atlas:import schemas/public/tables/permissions.sql
+-- atlas:import schemas/public/tables/user_roles.sql
+-- atlas:import schemas/public/tables/role_permissions.sql
+-- atlas:import schemas/public/tables/warehouses.sql
+-- atlas:import schemas/public/tables/locations.sql
+-- atlas:import schemas/public/tables/skus.sql
