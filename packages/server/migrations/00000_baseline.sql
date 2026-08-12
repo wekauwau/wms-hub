@@ -204,3 +204,64 @@ CREATE TABLE po_lines (
   unit_cost decimal(12, 4),
   created_at timestamptz DEFAULT NOW()
 );
+
+-- Outbound Pipeline
+CREATE TABLE sales_orders (
+  id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  order_number varchar(50) UNIQUE NOT NULL,
+  warehouse_id int NOT NULL REFERENCES warehouses (id),
+  customer_name varchar(255),
+  customer_address text,
+  status order_status DEFAULT 'PENDING',
+  priority int DEFAULT 0,
+  notes text,
+  created_by int NOT NULL REFERENCES users (id),
+  created_at timestamptz DEFAULT NOW(),
+  updated_at timestamptz DEFAULT NOW()
+);
+
+CREATE TABLE so_lines (
+  id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  so_id int NOT NULL REFERENCES sales_orders (id) ON DELETE CASCADE,
+  sku_id int NOT NULL REFERENCES skus (id),
+  requested_quantity decimal(12, 4) NOT NULL,
+  allocated_quantity decimal(12, 4) DEFAULT 0,
+  picked_quantity decimal(12, 4) DEFAULT 0,
+  packed_quantity decimal(12, 4) DEFAULT 0,
+  shipped_quantity decimal(12, 4) DEFAULT 0,
+  created_at timestamptz DEFAULT NOW()
+);
+
+CREATE TABLE pick_tasks (
+  id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  so_id int NOT NULL REFERENCES sales_orders (id),
+  so_line_id int NOT NULL REFERENCES so_lines (id),
+  sku_id int NOT NULL REFERENCES skus (id),
+  location_id int NOT NULL REFERENCES locations (id),
+  warehouse_id int NOT NULL REFERENCES warehouses (id),
+  expected_quantity decimal(12, 4) NOT NULL,
+  picked_quantity decimal(12, 4) DEFAULT 0,
+  assignee_id int REFERENCES users (id),
+  status varchar(50) DEFAULT 'PENDING',
+  started_at timestamptz,
+  completed_at timestamptz,
+  created_at timestamptz DEFAULT NOW()
+);
+
+CREATE TABLE shipments (
+  id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  shipment_number varchar(50) UNIQUE NOT NULL,
+  so_id int NOT NULL REFERENCES sales_orders (id),
+  warehouse_id int NOT NULL REFERENCES warehouses (id),
+  carrier varchar(100),
+  tracking_number varchar(255),
+  shipped_at timestamptz,
+  created_at timestamptz DEFAULT NOW()
+);
+
+CREATE TABLE shipment_items (
+  id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  shipment_id int NOT NULL REFERENCES shipments (id) ON DELETE CASCADE,
+  so_line_id int NOT NULL REFERENCES so_lines (id),
+  quantity decimal(12, 4) NOT NULL
+);

@@ -27,3 +27,8 @@
 -- atlas:import schemas/public/tables/stock_reservations.sql
 -- atlas:import schemas/public/tables/purchase_orders.sql
 -- atlas:import schemas/public/tables/po_lines.sql
+-- atlas:import schemas/public/tables/sales_orders.sql
+-- atlas:import schemas/public/tables/so_lines.sql
+-- atlas:import schemas/public/tables/pick_tasks.sql
+-- atlas:import schemas/public/tables/shipments.sql
+-- atlas:import schemas/public/tables/shipment_items.sql
