@@ -1,7 +1,13 @@
 import { Router } from 'express'
 import { authenticate, AuthenticatedRequest } from '../../middleware/authenticate.js'
 import { validate } from '../../middleware/validate.js'
-import { addPoLineSchema, createPoSchema, updatePoSchema } from './po.schema.js'
+import {
+  addPoLineSchema,
+  createPoSchema,
+  receiveLineSchema,
+  receivePoSchema,
+  updatePoSchema,
+} from './po.schema.js'
 import {
   addPoLine,
   createPo,
@@ -11,6 +17,7 @@ import {
   listPo,
   updatePo,
 } from './po.service.js'
+import { getReceivingSummary, receivePo, receiveSingleLine } from './receiving.service.js'
 
 const router = Router()
 
@@ -96,6 +103,40 @@ router.delete('/:id/lines/:lineId', async (req, res, next) => {
       return
     }
     res.status(204).end()
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/:id/receive/summary', async (req, res, next) => {
+  try {
+    const summary = await getReceivingSummary(req.params.id as string)
+    res.json(summary)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.post('/:id/receive', validate(receivePoSchema), async (req, res, next) => {
+  try {
+    const authReq = req as AuthenticatedRequest
+    const result = await receivePo(req.params.id as string, req.body, authReq.user.id)
+    res.json({ received: result })
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.post('/:id/receive/:lineId', validate(receiveLineSchema), async (req, res, next) => {
+  try {
+    const authReq = req as AuthenticatedRequest
+    const result = await receiveSingleLine(
+      req.params.id as string,
+      req.params.lineId as string,
+      req.body.receivedQuantity,
+      authReq.user.id,
+    )
+    res.json(result)
   } catch (err) {
     next(err)
   }
