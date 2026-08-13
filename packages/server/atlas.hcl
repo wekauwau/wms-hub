@@ -5,6 +5,6 @@ env "local" {
     dir = "file://migrations"
   }
   schema {
-    src = "file://db/schema.sql"
+    src = "file://db/schema/main.sql"
   }
 }

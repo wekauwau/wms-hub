@@ -1,0 +1,7 @@
+-- atlas:import ../public.sql
+
+CREATE TYPE public.exception_type AS ENUM (
+  'SHORT_SHIPMENT', 'OVER_RECEIPT', 'DAMAGED_GOODS',
+  'LOCATION_FULL', 'WRONG_ITEM', 'WRONG_LOCATION',
+  'STOCK_DISCREPANCY', 'QUALITY_HOLD'
+);

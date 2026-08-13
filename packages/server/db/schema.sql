@@ -1,3 +1,0 @@
--- WMS Hub - Schema (source of truth)
--- Tables, views, functions, triggers go here
--- Extensions are managed separately in migrations/00000_baseline.sql

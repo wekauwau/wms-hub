@@ -1,0 +1,40 @@
+-- atlas:import schemas/public/public.sql
+
+-- Types
+-- atlas:import schemas/public/types/enum_user_status.sql
+-- atlas:import schemas/public/types/enum_movement_type.sql
+-- atlas:import schemas/public/types/enum_order_status.sql
+-- atlas:import schemas/public/types/enum_asn_status.sql
+-- atlas:import schemas/public/types/enum_reservation_status.sql
+-- atlas:import schemas/public/types/enum_exception_status.sql
+-- atlas:import schemas/public/types/enum_exception_type.sql
+-- atlas:import schemas/public/types/enum_location_type.sql
+-- atlas:import schemas/public/types/enum_cycle_count_status.sql
+-- atlas:import schemas/public/types/enum_adjustment_status.sql
+-- atlas:import schemas/public/types/enum_transfer_status.sql
+
+-- Tables
+-- atlas:import schemas/public/tables/users.sql
+-- atlas:import schemas/public/tables/roles.sql
+-- atlas:import schemas/public/tables/permissions.sql
+-- atlas:import schemas/public/tables/user_roles.sql
+-- atlas:import schemas/public/tables/role_permissions.sql
+-- atlas:import schemas/public/tables/warehouses.sql
+-- atlas:import schemas/public/tables/locations.sql
+-- atlas:import schemas/public/tables/skus.sql
+-- atlas:import schemas/public/tables/inventory_movements.sql
+-- atlas:import schemas/public/tables/current_stock.sql
+-- atlas:import schemas/public/tables/stock_reservations.sql
+-- atlas:import schemas/public/tables/purchase_orders.sql
+-- atlas:import schemas/public/tables/po_lines.sql
+-- atlas:import schemas/public/tables/sales_orders.sql
+-- atlas:import schemas/public/tables/so_lines.sql
+-- atlas:import schemas/public/tables/pick_tasks.sql
+-- atlas:import schemas/public/tables/shipments.sql
+-- atlas:import schemas/public/tables/shipment_items.sql
+-- atlas:import schemas/public/tables/cycle_counts.sql
+-- atlas:import schemas/public/tables/cycle_count_lines.sql
+-- atlas:import schemas/public/tables/stock_adjustments.sql
+-- atlas:import schemas/public/tables/stock_transfers.sql
+-- atlas:import schemas/public/tables/exceptions.sql
+-- atlas:import schemas/public/tables/audit_logs.sql
