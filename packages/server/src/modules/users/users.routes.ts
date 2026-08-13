@@ -1,7 +1,10 @@
 import { Router } from 'express'
+import { authenticate } from '../../middleware/authenticate.js'
 import { createUser, deleteUser, getUser, listUsers, updateUser } from './users.service.js'
 
 const router = Router()
+
+router.use(authenticate)
 
 router.get('/', async (_req, res, next) => {
   try {

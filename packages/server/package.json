@@ -13,7 +13,9 @@
     "db:push": "atlas schema apply --env local --auto-approve",
     "db:pull": "atlas schema inspect --env local --format '{{ sql . }}' > db/schema.sql",
     "migrate": "atlas migrate apply --env local",
-    "seed": "tsx scripts/seed.ts"
+    "seed": "tsx scripts/seed.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "argon2": "^0.41.1",
@@ -36,7 +38,10 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^26.2.0",
     "@types/pg": "^8.21.0",
+    "@types/supertest": "^7.2.1",
+    "supertest": "^7.2.2",
     "tsx": "^4.23.12",
-    "typescript": "^6.0.0"
+    "typescript": "^6.0.0",
+    "vitest": "^4.1.10"
   }
 }

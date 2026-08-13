@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { authenticate } from '../../middleware/authenticate.js'
 import {
   assignPermissions,
   createRole,
@@ -9,6 +10,8 @@ import {
 } from './roles.service.js'
 
 const router = Router()
+
+router.use(authenticate)
 
 router.get('/', async (_req, res, next) => {
   try {
