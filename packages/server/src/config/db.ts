@@ -5,7 +5,7 @@ const { Pool } = pg
 
 let _db: Kysely<unknown> | null = null
 
-function getDb(): Kysely<unknown> {
+export function getDb(): Kysely<unknown> {
   if (!_db) {
     const pool = new Pool({
       connectionString: process.env.DATABASE_URL,

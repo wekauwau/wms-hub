@@ -3,6 +3,9 @@ import express from 'express'
 import helmet from 'helmet'
 import { checkDatabaseConnection } from './config/db.js'
 import { errorHandler, notFoundHandler } from './middleware/handler.js'
+import authRoutes from './modules/auth/auth.routes.js'
+import rolesRoutes from './modules/roles/roles.routes.js'
+import usersRoutes from './modules/users/users.routes.js'
 
 const app = express()
 
@@ -20,6 +23,10 @@ app.get('/health', async (_req, res) => {
       .json({ status: 'error', db: 'disconnected', timestamp: new Date().toISOString() })
   }
 })
+
+app.use('/api/auth', authRoutes)
+app.use('/api/users', usersRoutes)
+app.use('/api/roles', rolesRoutes)
 
 app.use(notFoundHandler)
 app.use(errorHandler)
