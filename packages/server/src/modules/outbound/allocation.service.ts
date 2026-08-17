@@ -112,7 +112,7 @@ export async function allocateSingleLine(
   const result = await allocateSo(
     soId,
     { lines: [{ lineId: Number(lineId), quantity }] },
-    allocatedBy,
+    _allocatedBy,
   )
   return result[0]
 }
