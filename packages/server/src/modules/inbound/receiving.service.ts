@@ -28,6 +28,17 @@ export async function receivePo(
     throw new AppError(`Cannot receive against ${po.status} PO`, 400)
   }
 
+  const stagingResult = await sql<{ id: number }>`
+    SELECT id FROM locations
+    WHERE warehouse_id = ${po.warehouse_id} AND code = 'STAGING' AND type = 'BIN'
+    LIMIT 1
+  `.execute(db)
+
+  if (!stagingResult.rows[0]) {
+    throw new AppError('No STAGING location found for this warehouse', 400)
+  }
+  const stagingLocationId = stagingResult.rows[0].id
+
   const results: ReceiveLineResult[] = []
 
   for (const item of input.lines) {
@@ -61,7 +72,7 @@ export async function receivePo(
 
     await sql`
       INSERT INTO inventory_movements (sku_id, location_id, warehouse_id, quantity, movement_type, reference_type, reference_id, created_by)
-      VALUES (${line.sku_id}, 0, ${po.warehouse_id}, ${item.receivedQuantity}, 'RECEIPT', 'PURCHASE_ORDER', ${Number(poId)}, ${Number(receivedBy)})
+      VALUES (${line.sku_id}, ${stagingLocationId}, ${po.warehouse_id}, ${item.receivedQuantity}, 'RECEIPT', 'PURCHASE_ORDER', ${Number(poId)}, ${Number(receivedBy)})
     `.execute(db)
 
     results.push({

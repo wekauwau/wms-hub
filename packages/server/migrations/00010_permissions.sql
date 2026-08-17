@@ -94,25 +94,3 @@ CROSS JOIN permissions AS p
 WHERE
   r.name = 'viewer'
   AND p.name LIKE '%:read';
-
--- Seed admin user (password: admin123 - change in production!)
-INSERT INTO users (email, password_hash, first_name, last_name, status)
-VALUES (
-  'admin@wms.local',
-  '$argon2id$v=19$m=65536,t=3,p=4$placeholder',
-  'System',
-  'Admin',
-  'ACTIVE'
-);
-
--- Assign admin role to admin user
-INSERT INTO user_roles (user_id, role_id, warehouse_id)
-SELECT
-  u.id AS user_id,
-  r.id AS role_id,
-  0 AS warehouse_id
-FROM users AS u
-CROSS JOIN roles AS r
-WHERE
-  u.email = 'admin@wms.local'
-  AND r.name = 'admin';

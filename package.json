@@ -38,7 +38,7 @@
       "prettier --write"
     ],
     "packages/**/*.sql": [
-      "sqlfluff fix --dialect postgres --force"
+      "sqlfluff fix --dialect postgres"
     ]
   },
   "devDependencies": {

@@ -7,7 +7,7 @@ import { getDb } from '../config/db.js'
 describe('Inbound Pipeline', () => {
   let accessToken = ''
   let warehouseId = 0
-  let locationId = 0
+  let binLocationId = 0
   let skuId = 0
   let poId = 0
   let poLineId = 0
@@ -32,13 +32,19 @@ describe('Inbound Pipeline', () => {
     `.execute(db)
     warehouseId = wh.rows[0].id
 
-    const loc = await sql<{ id: number }>`
+    await sql`
+      INSERT INTO locations (warehouse_id, code, name, type, path)
+      VALUES (${warehouseId}, 'STAGING', 'Staging Area', 'BIN', '1.0')
+      ON CONFLICT (warehouse_id, code) DO UPDATE SET name = EXCLUDED.name
+    `.execute(db)
+
+    const bin = await sql<{ id: number }>`
       INSERT INTO locations (warehouse_id, code, name, type, path)
       VALUES (${warehouseId}, 'TEST-BIN-01', 'Test Bin', 'BIN', '1.1')
       ON CONFLICT (warehouse_id, code) DO UPDATE SET name = EXCLUDED.name
       RETURNING id
     `.execute(db)
-    locationId = loc.rows[0].id
+    binLocationId = bin.rows[0].id
 
     const sku = await sql<{ id: number }>`
       INSERT INTO skus (sku_code, name, uom) VALUES ('TEST-SKU-001', 'Test Widget', 'UNITS')
@@ -77,7 +83,7 @@ describe('Inbound Pipeline', () => {
 
       expect(res.status).toBe(201)
       expect(res.body).toHaveProperty('id')
-      poLineId = res.body.id
+      poLineId = Number(res.body.id)
     })
   })
 
@@ -128,8 +134,8 @@ describe('Inbound Pipeline', () => {
 
       expect(res.status).toBe(200)
       expect(res.body).toHaveLength(1)
-      expect(res.body[0].receivedQuantity).toBe(100)
-      expect(res.body[0].remaining).toBe(0)
+      expect(Number(res.body[0].receivedQuantity)).toBe(100)
+      expect(Number(res.body[0].remaining)).toBe(0)
     })
   })
 
@@ -153,7 +159,7 @@ describe('Inbound Pipeline', () => {
       const res = await request(app)
         .post('/api/inbound/putaway/confirm')
         .set('Authorization', `Bearer ${accessToken}`)
-        .send({ skuId, locationId, quantity: 100, poId })
+        .send({ skuId, locationId: binLocationId, quantity: 100, poId: Number(poId) })
 
       expect(res.status).toBe(201)
       expect(res.body).toHaveProperty('movementId')
