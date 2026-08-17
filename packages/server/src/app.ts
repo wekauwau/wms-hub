@@ -4,6 +4,7 @@ import helmet from 'helmet'
 import { checkDatabaseConnection } from './config/db.js'
 import { errorHandler, notFoundHandler } from './middleware/handler.js'
 import authRoutes from './modules/auth/auth.routes.js'
+import inboundRoutes from './modules/inbound/index.js'
 import rolesRoutes from './modules/roles/roles.routes.js'
 import usersRoutes from './modules/users/users.routes.js'
 
@@ -27,6 +28,7 @@ app.get('/health', async (_req, res) => {
 app.use('/api/auth', authRoutes)
 app.use('/api/users', usersRoutes)
 app.use('/api/roles', rolesRoutes)
+app.use('/api/inbound', inboundRoutes)
 
 app.use(notFoundHandler)
 app.use(errorHandler)

@@ -1,2 +1,4 @@
-h1:oBUJDKsBjz7MugowyCFRv19R0riE+zDPu5D5b+Hlr6E=
+h1:taKoPNlHcoxPHHnSjbbjAk1CCQSFR447yJOilBfJWag=
 00000_baseline.sql h1:UU9Qlrrq82nhsnmJEywdCNFWxXY2VPb8enTJ4TL4XEs=
+00010_permissions.sql h1:F/+o4TEn/kJ0E7ThQt5EsveaMoPQoTCgVel6NkQqPZI=
+00011_seed_admin.sql h1:XEJlhaYJD24ozp21ACMOYd6UZS/ddcHSjEK1HVVJnvw=
