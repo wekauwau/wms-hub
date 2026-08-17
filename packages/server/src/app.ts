@@ -8,6 +8,7 @@ import inboundRoutes from './modules/inbound/index.js'
 import outboundRoutes from './modules/outbound/index.js'
 import rolesRoutes from './modules/roles/roles.routes.js'
 import usersRoutes from './modules/users/users.routes.js'
+import workflowsRoutes from './modules/workflows/index.js'
 
 const app = express()
 
@@ -31,6 +32,7 @@ app.use('/api/users', usersRoutes)
 app.use('/api/roles', rolesRoutes)
 app.use('/api/inbound', inboundRoutes)
 app.use('/api/outbound', outboundRoutes)
+app.use('/api', workflowsRoutes)
 
 app.use(notFoundHandler)
 app.use(errorHandler)

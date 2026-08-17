@@ -152,9 +152,10 @@ export async function approveStockAdjustment(id: string, approvedBy: string, not
 
   const adj = rows[0]
 
+  const movementType = adj.quantity_change > 0 ? 'ADJUSTMENT_ADD' : 'ADJUSTMENT_REMOVE'
   await sql`
     INSERT INTO inventory_movements (sku_id, location_id, warehouse_id, quantity, movement_type, reference_type, reference_id, created_by)
-    VALUES (${adj.sku_id}, ${adj.location_id}, ${adj.warehouse_id}, ${adj.quantity_change}::decimal, 'ADJUSTMENT', 'STOCK_ADJUSTMENT', ${adj.id}, ${Number(approvedBy)})
+    VALUES (${adj.sku_id}, ${adj.location_id}, ${adj.warehouse_id}, ${adj.quantity_change}::decimal, ${movementType}, 'STOCK_ADJUSTMENT', ${adj.id}, ${Number(approvedBy)})
   `.execute(db)
 
   return getStockAdjustment(id)
