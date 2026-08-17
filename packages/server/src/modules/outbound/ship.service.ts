@@ -90,9 +90,10 @@ export async function shipSo(
       WHERE id = ${item.soLineId}
     `.execute(db)
 
+    const negQuantity = -item.quantity
     await sql`
       INSERT INTO inventory_movements (sku_id, location_id, warehouse_id, quantity, movement_type, reference_type, reference_id, created_by)
-      SELECT ${skuId}, cs.location_id, ${so.warehouse_id}, -${item.quantity}, 'SHIP', 'SALES_ORDER', ${Number(soId)}, ${Number(shippedBy)}
+      SELECT ${skuId}, cs.location_id, ${so.warehouse_id}, ${negQuantity}::decimal, 'SHIP', 'SALES_ORDER', ${Number(soId)}, ${Number(shippedBy)}
       FROM current_stock cs
       WHERE cs.sku_id = ${skuId} AND cs.warehouse_id = ${so.warehouse_id} AND cs.on_hand >= ${item.quantity}
       LIMIT 1

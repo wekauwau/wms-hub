@@ -1,7 +1,7 @@
 import { Router } from 'express'
-import { authenticate } from '../../middleware/authenticate.js'
+import { authenticate, AuthenticatedRequest } from '../../middleware/authenticate.js'
 import { validate } from '../../middleware/validate.js'
-import { completePick, getPicks } from './pick.service.js'
+import { completePick, createPicks, getPicks } from './pick.service.js'
 import { completePickSchema } from './so.schema.js'
 import { getSo } from './so.service.js'
 
@@ -18,6 +18,21 @@ router.get('/:id/picks', async (req, res, next) => {
     }
     const picks = await getPicks(req.params.id as string)
     res.json(picks)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.post('/:id/picks', async (req, res, next) => {
+  try {
+    const so = await getSo(req.params.id as string)
+    if (!so) {
+      res.status(404).json({ error: 'Sales order not found' })
+      return
+    }
+    const authReq = req as unknown as AuthenticatedRequest
+    const result = await createPicks(req.params.id as string, req.body.picks, authReq.user.id)
+    res.status(201).json(result)
   } catch (err) {
     next(err)
   }
