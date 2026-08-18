@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import { getDb } from '../../config/db.js'
 import { AppError } from '../../middleware/errors.js'
+import { emitEvent } from '../../realtime/events.js'
 import { CreateStockTransferInput } from './stock-transfer.schema.js'
 
 export async function listStockTransfers(warehouseId?: string) {
@@ -161,6 +162,8 @@ export async function completeStockTransfer(id: string, completedBy: string) {
     INSERT INTO inventory_movements (sku_id, location_id, warehouse_id, quantity, movement_type, reference_type, reference_id, created_by)
     VALUES (${t.sku_id}, ${t.to_location_id}, ${t.to_warehouse_id}, ${t.quantity}::decimal, 'TRANSFER_IN', 'STOCK_TRANSFER', ${t.id}, ${Number(completedBy)})
   `.execute(db)
+
+  emitEvent({ type: 'transfer.completed', data: { transferId: id, skuId: String(t.sku_id) } })
 
   return getStockTransfer(id)
 }

@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import { getDb } from '../../config/db.js'
 import { AppError } from '../../middleware/errors.js'
+import { emitEvent } from '../../realtime/events.js'
 import {
   CountCycleCountInput,
   CreateCycleCountInput,
@@ -258,6 +259,8 @@ export async function reconcileCycleCount(
     throw new AppError('Cycle count is not in SUBMITTED status', 400)
   }
 
+  let varianceCount = 0
+
   for (const line of input.lines) {
     const lineResult = await sql<{
       id: number
@@ -277,6 +280,7 @@ export async function reconcileCycleCount(
     if (line.action === 'ADJUST' && lineData.counted_quantity !== null) {
       const adjustment = Number(lineData.counted_quantity) - Number(lineData.expected_quantity)
       if (adjustment !== 0) {
+        varianceCount += 1
         const movementType = adjustment > 0 ? 'CYCLE_COUNT_ADJUSTMENT' : 'CYCLE_COUNT_ADJUSTMENT'
         await sql`
           INSERT INTO inventory_movements (sku_id, location_id, warehouse_id, quantity, movement_type, reference_type, reference_id, created_by)
@@ -291,6 +295,11 @@ export async function reconcileCycleCount(
     SET status = 'RECONCILED', reconciled_by = ${Number(reconciledBy)}, reconciled_at = NOW()
     WHERE id = ${Number(id)}
   `.execute(db)
+
+  emitEvent({
+    type: 'cycle-count.reconciled',
+    data: { cycleCountId: id, variances: varianceCount },
+  })
 
   return getCycleCount(id)
 }

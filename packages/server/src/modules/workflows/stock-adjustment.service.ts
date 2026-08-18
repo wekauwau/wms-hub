@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import { getDb } from '../../config/db.js'
 import { AppError } from '../../middleware/errors.js'
+import { emitEvent } from '../../realtime/events.js'
 import { CreateStockAdjustmentInput } from './stock-adjustment.schema.js'
 
 export async function listStockAdjustments(warehouseId?: string) {
@@ -157,6 +158,8 @@ export async function approveStockAdjustment(id: string, approvedBy: string, not
     INSERT INTO inventory_movements (sku_id, location_id, warehouse_id, quantity, movement_type, reference_type, reference_id, created_by)
     VALUES (${adj.sku_id}, ${adj.location_id}, ${adj.warehouse_id}, ${adj.quantity_change}::decimal, ${movementType}, 'STOCK_ADJUSTMENT', ${adj.id}, ${Number(approvedBy)})
   `.execute(db)
+
+  emitEvent({ type: 'adjustment.approved', data: { adjustmentId: id, skuId: String(adj.sku_id) } })
 
   return getStockAdjustment(id)
 }

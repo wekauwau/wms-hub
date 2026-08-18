@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import { getDb } from '../../config/db.js'
 import { AppError } from '../../middleware/errors.js'
+import { emitEvent } from '../../realtime/events.js'
 import { ShipSoInput } from './so.schema.js'
 
 interface ShipmentInfo {
@@ -119,6 +120,11 @@ export async function shipSo(
       WHERE id = ${Number(soId)}
     `.execute(db)
   }
+
+  emitEvent({
+    type: 'order.shipped',
+    data: { soId, shipmentId: String(shipment.id), shipmentNumber },
+  })
 
   return {
     id: String(shipment.id),

@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import { getDb } from '../../config/db.js'
 import { AppError } from '../../middleware/errors.js'
+import { emitEvent } from '../../realtime/events.js'
 
 interface PickTaskInfo {
   id: string
@@ -219,6 +220,8 @@ export async function completePick(pickId: string, pickedQuantity: number): Prom
       WHERE id = ${pick.so_id}
     `.execute(db)
   }
+
+  emitEvent({ type: 'pick.completed', data: { pickId, soId: String(pick.so_id) } })
 
   return {
     id: String(task.id),
