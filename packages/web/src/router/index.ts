@@ -1,6 +1,14 @@
 import DashboardView from '@/views/DashboardView.vue'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
+import PoDetailView from '@/views/inbound/PoDetailView.vue'
+import PoListView from '@/views/inbound/PoListView.vue'
+import PutawayView from '@/views/inbound/PutawayView.vue'
+import ReceiveView from '@/views/inbound/ReceiveView.vue'
+import ShipView from '@/views/outbound/ShipView.vue'
+import SoDetailView from '@/views/outbound/SoDetailView.vue'
+import SoExecuteView from '@/views/outbound/SoExecuteView.vue'
+import SoListView from '@/views/outbound/SoListView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -21,6 +29,54 @@ const router = createRouter({
       path: '/dashboard',
       name: 'dashboard',
       component: DashboardView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/inbound/po',
+      name: 'po-list',
+      component: PoListView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/inbound/po/:id',
+      name: 'po-detail',
+      component: PoDetailView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/inbound/po/:id/receive',
+      name: 'po-receive',
+      component: ReceiveView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/inbound/putaway',
+      name: 'putaway',
+      component: PutawayView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/outbound/so',
+      name: 'so-list',
+      component: SoListView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/outbound/so/:id',
+      name: 'so-detail',
+      component: SoDetailView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/outbound/so/:id/execute',
+      name: 'so-execute',
+      component: SoExecuteView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/outbound/so/:id/ship',
+      name: 'so-ship',
+      component: ShipView,
       meta: { requiresAuth: true },
     },
   ],
