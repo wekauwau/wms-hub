@@ -1,6 +1,8 @@
 import DashboardView from '@/views/DashboardView.vue'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
+import RolesView from '@/views/admin/RolesView.vue'
+import UsersView from '@/views/admin/UsersView.vue'
 import PoDetailView from '@/views/inbound/PoDetailView.vue'
 import PoListView from '@/views/inbound/PoListView.vue'
 import PutawayView from '@/views/inbound/PutawayView.vue'
@@ -9,6 +11,8 @@ import ShipView from '@/views/outbound/ShipView.vue'
 import SoDetailView from '@/views/outbound/SoDetailView.vue'
 import SoExecuteView from '@/views/outbound/SoExecuteView.vue'
 import SoListView from '@/views/outbound/SoListView.vue'
+import LocationUsageView from '@/views/reports/LocationUsageView.vue'
+import StockSummaryView from '@/views/reports/StockSummaryView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -77,6 +81,30 @@ const router = createRouter({
       path: '/outbound/so/:id/ship',
       name: 'so-ship',
       component: ShipView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/reports/stock-summary',
+      name: 'stock-summary',
+      component: StockSummaryView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/reports/location-usage',
+      name: 'location-usage',
+      component: LocationUsageView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/admin/users',
+      name: 'admin-users',
+      component: UsersView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/admin/roles',
+      name: 'admin-roles',
+      component: RolesView,
       meta: { requiresAuth: true },
     },
   ],

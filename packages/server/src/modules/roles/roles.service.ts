@@ -32,6 +32,25 @@ export async function listRoles() {
   }))
 }
 
+export async function listPermissions() {
+  const db = getDb()
+  const { rows } = await sql<{
+    id: number
+    name: string
+    description: string | null
+  }>`
+    SELECT id, name, description
+    FROM permissions
+    ORDER BY id
+  `.execute(db)
+
+  return rows.map((r) => ({
+    id: String(r.id),
+    name: r.name,
+    description: r.description,
+  }))
+}
+
 export async function getRole(id: string) {
   const db = getDb()
   const { rows } = await sql<{

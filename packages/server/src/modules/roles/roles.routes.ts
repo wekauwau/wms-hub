@@ -5,6 +5,7 @@ import {
   createRole,
   deleteRole,
   getRole,
+  listPermissions,
   listRoles,
   updateRole,
 } from './roles.service.js'
@@ -17,6 +18,15 @@ router.get('/', async (_req, res, next) => {
   try {
     const roles = await listRoles()
     res.json(roles)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/permissions', async (_req, res, next) => {
+  try {
+    const permissions = await listPermissions()
+    res.json(permissions)
   } catch (err) {
     next(err)
   }
