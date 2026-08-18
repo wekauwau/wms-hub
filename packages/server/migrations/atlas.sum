@@ -1,4 +1,10 @@
-h1:taKoPNlHcoxPHHnSjbbjAk1CCQSFR447yJOilBfJWag=
+h1:1D67040SBsXURb7/UBeY1PT5lnLlMDeMzgodbBx4Kzo=
 00000_baseline.sql h1:UU9Qlrrq82nhsnmJEywdCNFWxXY2VPb8enTJ4TL4XEs=
 00010_permissions.sql h1:F/+o4TEn/kJ0E7ThQt5EsveaMoPQoTCgVel6NkQqPZI=
-00011_seed_admin.sql h1:XEJlhaYJD24ozp21ACMOYd6UZS/ddcHSjEK1HVVJnvw=
+00011_seed_admin.sql h1:s6lx9Sot1f6FVOMYXUrh5OoVJEUUlK8EDUYrpFTEU+I=
+00012_seed_warehouse.sql h1:pIBqxicYUefQIEyb6ZzY8yty0BpDb3Lhkd17+RU9eYI=
+00013_seed_skus.sql h1:731ZcDR+y0ofVBUS2nXc0UM8qruYEbVV0QyNIYNOdEo=
+00014_seed_users.sql h1:IE1UoLjK/Cw2sCX5G8MLjSYF1TS+jSpeV9k5kwQUglY=
+00015_seed_pos.sql h1:hzSmW8KsO5gJ9YBjUUjeLJWO1HCZuBnyA3N8nRddDqY=
+00016_seed_sos.sql h1:2nzxAY5r/PVOKPa1rX1Gy4bIAhfo2llaM3rBU22FWA8=
+00017_seed_workflows.sql h1:5A7KanzKopFmhCSmHzLBYLnBldM6ye4g0DIdaFwYelg=
