@@ -9,6 +9,11 @@ interface User {
   lastName: string | null
 }
 
+interface LoginResponse {
+  accessToken: string
+  user: User
+}
+
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
   const token = ref<string | null>(localStorage.getItem('accessToken'))
@@ -16,27 +21,23 @@ export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = computed(() => !!token.value)
 
   async function login(email: string, password: string) {
-    const response = await api.post('/auth/login', { email, password })
-    const data = response.data as { accessToken: string; user: User }
+    const data = await api.post<LoginResponse>('/auth/login', { email, password })
     token.value = data.accessToken
     user.value = data.user
     localStorage.setItem('accessToken', data.accessToken)
-    api.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`
   }
 
   async function logout() {
     token.value = null
     user.value = null
     localStorage.removeItem('accessToken')
-    delete api.defaults.headers.common['Authorization']
   }
 
   async function fetchUser() {
     if (!token.value) return
     try {
-      api.defaults.headers.common['Authorization'] = `Bearer ${token.value}`
-      const response = await api.get('/auth/me')
-      user.value = response.data as User
+      const me = await api.get<User>('/auth/me')
+      user.value = me
     } catch {
       await logout()
     }

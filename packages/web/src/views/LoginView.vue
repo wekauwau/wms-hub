@@ -19,8 +19,7 @@ async function handleLogin() {
     await authStore.login(email.value, password.value)
     router.push('/dashboard')
   } catch (e: unknown) {
-    const axiosError = e as { response?: { data?: { error?: string } } }
-    error.value = axiosError.response?.data?.error || 'Login failed'
+    error.value = e instanceof Error ? e.message : 'Login failed'
   } finally {
     loading.value = false
   }
