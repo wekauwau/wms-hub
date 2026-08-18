@@ -13,6 +13,8 @@
     "db:push": "atlas schema apply --env local --auto-approve",
     "db:pull": "atlas schema inspect --env local --format '{{ sql . }}' > db/schema.sql",
     "migrate": "atlas migrate apply --env local",
+    "db:seed": "tsx src/seed/index.ts",
+    "demo": "tsx src/demo/index.ts",
     "test": "vitest run",
     "test:watch": "vitest"
   },
