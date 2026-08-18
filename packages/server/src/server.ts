@@ -18,9 +18,12 @@ import { getEnv } from './config/env.js'
 getEnv()
 
 import app from './app.js'
+import { createRealtimeServer } from './realtime/server.js'
 
 const { PORT } = getEnv()
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
 })
+
+createRealtimeServer(server)

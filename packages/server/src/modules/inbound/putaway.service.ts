@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import { getDb } from '../../config/db.js'
 import { AppError } from '../../middleware/errors.js'
+import { emitEvent } from '../../realtime/events.js'
 
 interface PutawaySuggestion {
   locationId: string
@@ -125,6 +126,24 @@ export async function confirmPutaway(
       on_hand = current_stock.on_hand + ${input.quantity},
       updated_at = NOW()
   `.execute(db)
+
+  emitEvent({
+    type: 'stock.moved',
+    data: {
+      movementId: String(movement.rows[0].id),
+      skuId: String(input.skuId),
+      warehouseId: String(warehouseId),
+      quantity: input.quantity,
+    },
+  })
+  emitEvent({
+    type: 'putaway.confirmed',
+    data: {
+      movementId: String(movement.rows[0].id),
+      skuId: String(input.skuId),
+      locationId: String(input.locationId),
+    },
+  })
 
   return {
     movementId: String(movement.rows[0].id),

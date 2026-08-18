@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import { getDb } from '../../config/db.js'
 import { AppError } from '../../middleware/errors.js'
+import { emitEvent } from '../../realtime/events.js'
 import { ReceivePoInput } from './po.schema.js'
 
 interface ReceiveLineResult {
@@ -83,6 +84,10 @@ export async function receivePo(
   }
 
   await updatePoStatus(poId)
+
+  for (const result of results) {
+    emitEvent({ type: 'po.received', data: { poId, lineId: result.lineId } })
+  }
 
   return results
 }
