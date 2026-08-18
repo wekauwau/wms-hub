@@ -14,6 +14,8 @@ const navItems = [
   { label: 'Outbound', to: '/outbound', icon: 'truck' },
   { label: 'Inventory', to: '/inventory', icon: 'boxes' },
   { label: 'Workflows', to: '/workflows', icon: 'git-branch' },
+  { label: 'Reports', to: '/reports/stock-summary', icon: 'chart' },
+  { label: 'Admin', to: '/admin/users', icon: 'shield' },
 ]
 
 async function handleLogout() {
