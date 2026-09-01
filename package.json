@@ -1,0 +1,39 @@
+{
+  "name": "wms-hub",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "api": "pnpm --filter @wms-hub/api",
+    "web": "pnpm --filter @wms-hub/web",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "sqlfluff": "sqlfluff lint 'packages/**/*.sql' 'packages/**/*.sql.jinja'",
+    "sqlfluff:fix": "sqlfluff fix 'packages/**/*.sql' 'packages/**/*.sql.jinja'",
+    "check": "pnpm lint && pnpm format:check",
+    "check:fix": "pnpm lint:fix && pnpm format"
+  },
+  "license": "MIT",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.3.0",
+      "onFail": "download"
+    }
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@nuxt/eslint-config": "^1.17.0",
+    "@types/node": "^26.4.0",
+    "eslint": "^10.9.1",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.11.0",
+    "prettier": "^3.9.6",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.68.0",
+    "vue-eslint-parser": "^10.4.1",
+    "vue-tsc": "^3.3.11"
+  }
+}
