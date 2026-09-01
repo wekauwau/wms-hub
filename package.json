@@ -16,13 +16,7 @@
     "prepare": "husky"
   },
   "license": "MIT",
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "^11.3.0",
-      "onFail": "download"
-    }
-  },
+  "packageManager": "pnpm@11.3.0",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@nuxt/eslint-config": "^1.17.0",

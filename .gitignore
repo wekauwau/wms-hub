@@ -6,4 +6,5 @@ dist
 *.tsbuildinfo
 
 .opencode
+docs
 graphify-out
